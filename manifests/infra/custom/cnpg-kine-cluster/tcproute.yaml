@@ -4,11 +4,15 @@ metadata:
   name: kine-tcp
 spec:
   parentRefs:
-    - name: gateway
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: gateway
       namespace: envoy-gateway-system
       sectionName: placeholder-gateway-section
   rules:
     - backendRefs: 
-      - kind: Service
+      - group: ''
+        kind: Service
         name: kine-pg
         port: 5432
+        weight: 1
