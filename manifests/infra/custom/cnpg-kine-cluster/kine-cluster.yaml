@@ -1,0 +1,28 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: kine-pg
+spec:
+  instances: 3
+
+  postgresql:
+    parameters:
+      max_connections: "200"
+      shared_buffers: "512MB"
+      wal_level: "replica"
+
+  bootstrap:
+    initdb:
+      database: kine
+      owner: kine
+
+  storage:
+    size: 10Gi
+    storageClass: local-path
+
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 500m
+    limits:
+      memory: 2Gi
