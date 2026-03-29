@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rauthy-config
+data:
+  config.toml: |
+{{ tpl (.Files.Get "config.toml.template") . | indent 4 }}

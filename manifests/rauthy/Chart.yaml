@@ -1,0 +1,4 @@
+apiVersion: v2
+name: rauthy
+version: 0.1.0
+description: Rauthy OIDC identity provider

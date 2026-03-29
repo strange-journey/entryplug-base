@@ -1,0 +1,19 @@
+# Per-app overrides for generate_config.py
+
+# Force a specific type kind for keys where the commented-out form
+# can't be inferred correctly.  Keys are "section.key".
+[type_overrides]
+"email.smtp_port" = "scalar"
+"email.smtp_username" = "string"
+"email.smtp_password" = "string"
+
+# Helm template expressions that replace the normal .Values.config
+# reference for a key.  The entry is still emitted in the template but
+# uses this expression instead and is excluded from values.yaml.
+[template_expressions]
+"server.pub_url" = '{{ .Values.domain | quote }}'
+"webauthn.rp_id" = '{{ .Values.domain | quote }}'
+"webauthn.rp_origin" = '{{ printf "https://%s:443" .Values.domain | quote }}'
+"email.rauthy_admin_email" = '{{ .Values.webmasterEmail | quote }}'
+"email.smtp_from" = '{{ printf "%s <%s>" .Values.webmasterName .Values.webmasterEmail | quote }}'
+"events.email" = '{{ printf "%s" .Values.webmasterEmail | quote }}'
