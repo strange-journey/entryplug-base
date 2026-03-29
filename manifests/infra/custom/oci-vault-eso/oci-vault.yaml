@@ -1,0 +1,23 @@
+apiVersion: external-secrets.io/v1
+kind: ClusterSecretStore
+metadata:
+  name: oci-vault
+spec:
+  provider:
+    oracle:
+      compartment: placeholder_compartment_ocid
+      vault: placeholder_vault_ocid
+      region: placeholder_oci_region
+      encryptionKey: placeholder_encryption_key_ocid
+      auth:
+        user: placeholder_user_ocid
+        tenancy: placeholder_tenancy_ocid
+        secretRef:
+          fingerprint:
+            namespace: external-secrets-operator
+            name: oci-credentials
+            key: fingerprint
+          privatekey:
+            namespace: external-secrets-operator
+            name: oci-credentials
+            key: privateKey
