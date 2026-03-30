@@ -8,7 +8,7 @@ spec:
       kind: Gateway
       name: gateway
       namespace: envoy-gateway-system
-      sectionName: argo-https
+      sectionName: placeholder-gateway-section
   hostnames:
     - argocd.example.com
   rules:
