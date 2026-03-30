@@ -1,0 +1,26 @@
+# the gateway wildcard cert is also used for internal Rauthy TLS
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: wildcard-cert-external-secret
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: oci-vault
+    kind: ClusterSecretStore
+
+  target:
+    name: wildcard-cert-tls
+    creationPolicy: Owner
+    deletionPolicy: Retain
+    template:
+      type: kubernetes.io/tls
+      engineVersion: v2	
+      mergePolicy: Replace
+
+  dataFrom:
+  - extract:
+      conversionStrategy: Default	
+      decodingStrategy: None
+      metadataPolicy: None
+      key: placeholder_vault_secret_key
