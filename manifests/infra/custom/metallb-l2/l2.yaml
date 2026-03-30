@@ -1,0 +1,10 @@
+# L2Advertisement makes MetalLB respond to ARP requests for the pool IPs.
+# This works for single-node clusters on a local network without requiring BGP.
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: default-l2
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - default-pool
