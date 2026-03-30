@@ -11,7 +11,7 @@ spec:
 
   target:
     name: argocd-server-tls
-    creationPolicy: Merge
+    creationPolicy: Owner
     deletionPolicy: Retain
 
   dataFrom:
