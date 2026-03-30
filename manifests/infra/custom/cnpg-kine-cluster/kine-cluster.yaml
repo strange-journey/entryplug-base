@@ -10,6 +10,9 @@ spec:
       max_connections: "200"
       shared_buffers: "512MB"
       wal_level: "replica"
+    pg_hba:
+      - hostnossl all all all reject
+      - hostssl all all all cert
 
   bootstrap:
     initdb:

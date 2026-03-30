@@ -13,6 +13,6 @@ spec:
     - backendRefs: 
       - group: ''
         kind: Service
-        name: kine-pg
+        name: kine-pg-rw
         port: 5432
         weight: 1
