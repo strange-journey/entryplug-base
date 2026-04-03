@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: minecraft-server
+  labels:
+    app: minecraft-server
+spec:
+  serviceName: minecraft-server
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft-server
+  template:
+    metadata:
+      labels:
+        app: minecraft-server
+    spec:
+      securityContext:
+        fsGroup: 10001
+      containers:
+        - name: minecraft-server
+          image: itzg/minecraft-server:2026.3.3-java17
+          securityContext:
+            capabilities:
+              drop:
+                - ALL
+            runAsUser: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          ports:
+            - containerPort: 25565
+          volumeMounts:
+            - name: minecraft-data
+              mountPath: /data
+              readOnly: false
+
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: minecraft-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 50Gi
