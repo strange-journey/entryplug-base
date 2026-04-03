@@ -5,7 +5,6 @@ metadata:
   labels:
     app: minecraft-server
 spec:
-  serviceName: minecraft-server
   replicas: 1
   selector:
     matchLabels:
@@ -19,7 +18,7 @@ spec:
         fsGroup: 10001
       containers:
         - name: minecraft-server
-          image: itzg/minecraft-server:2026.3.3-java17
+          image: itzg/minecraft-server:latest
           securityContext:
             capabilities:
               drop:
@@ -28,6 +27,9 @@ spec:
             runAsGroup: 10001
             runAsNonRoot: true
             allowPrivilegeEscalation: false
+          env:
+            - name: EULA
+              value: "TRUE"
           ports:
             - containerPort: 25565
           volumeMounts:
