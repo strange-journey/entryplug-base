@@ -1,3 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: minecraft
+---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -32,13 +37,26 @@ spec:
               value: "TRUE"
           ports:
             - containerPort: 25565
+          readinessProbe:
+            exec:
+              command: [ "/usr/local/bin/mc-monitor", "status", "--host", "localhost" ]
+            # Give it i + p * f seconds to be ready, so 120 seconds
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            failureThreshold: 20
+          # Monitor ongoing liveness
+          livenessProbe:
+            exec:
+              command: ["/usr/local/bin/mc-monitor", "status", "--host", "localhost"]
+            initialDelaySeconds: 120
+            periodSeconds: 60
           resources:
             requests:
               # hugepages-2Mi: 8Gi
-              memory: 11Gi
+              memory: 8Gi
             limits:
               # hugepages-2Mi: 8Gi
-              memory: 11Gi
+              memory: 8Gi
           volumeMounts:
             - name: minecraft-data
               mountPath: /data
