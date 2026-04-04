@@ -32,6 +32,24 @@ spec:
               value: "TRUE"
           ports:
             - containerPort: 25565
+          readinessProbe:
+            exec:
+              command: [ "/usr/local/bin/mc-monitor", "status", "--host", "localhost" ]
+            # Give it i + p * f seconds to be ready, so 120 seconds
+            initialDelaySeconds: 20
+            periodSeconds: 5
+            failureThreshold: 20
+          # Monitor ongoing liveness
+          livenessProbe:
+            exec:
+              command: ["/usr/local/bin/mc-monitor", "status", "--host", "localhost"]
+            initialDelaySeconds: 120
+            periodSeconds: 60
+          resources:
+            requests:
+              memory: 9Gi
+            limits:
+              memory: 9Gi
           volumeMounts:
             - name: minecraft-data
               mountPath: /data
