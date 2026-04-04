@@ -47,13 +47,21 @@ spec:
             periodSeconds: 60
           resources:
             requests:
-              memory: 9Gi
+              # hugepages-2Mi: 8Gi
+              memory: 11Gi
             limits:
-              memory: 9Gi
+              # hugepages-2Mi: 8Gi
+              memory: 11Gi
           volumeMounts:
             - name: minecraft-data
               mountPath: /data
               readOnly: false
+            # - name: hugepage
+              # mountPath: /hugepages
+      # volumes:
+      #   - name: hugepage
+      #     emptyDir:
+      #       medium: HugePages-2Mi
 
   volumeClaimTemplates:
     - apiVersion: v1
