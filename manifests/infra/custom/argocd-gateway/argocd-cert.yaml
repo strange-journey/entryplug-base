@@ -1,0 +1,15 @@
+# previously, we shared the wildcard cert for argocd with the general gateway.
+# this caused routing to fail on HTTP/2 connection reuse:
+# <https://github.com/istio/istio/issues/13589>
+# <https://github.com/envoyproxy/envoy/issues/6767>
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: argocd-cert
+spec:
+  secretName: argocd-server-tls
+  issuerRef:
+    name: letsencrypt
+    kind: ClusterIssuer
+  dnsNames:
+    - argocd.example.com

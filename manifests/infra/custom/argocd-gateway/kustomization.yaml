@@ -3,4 +3,4 @@ kind: Kustomization
 namespace: argocd
 resources:
   - tlsroute.yaml
-  - wildcard-cert.yaml
+  - argocd-cert.yaml
