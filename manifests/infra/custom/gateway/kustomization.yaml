@@ -5,4 +5,4 @@ resources:
   - gateway.yaml
   - gatewayclass.yaml
   - tls-redirect.yaml
-  - policy.yaml
+  - client-traffic-policy.yaml
