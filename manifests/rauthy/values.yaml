@@ -1282,14 +1282,14 @@ config:
     http_workers: null
 
     # When rauthy is running behind a reverse proxy, set to true
-    proxy_mode: true
+    proxy_mode: false
 
     # A list of trusted proxy CIDRs. When `proxy_mode = true`
     # or `peer_ip_header_name` is set, these are mandatory to
     # be able to extract the real client IP properly and safely
     # to prevent IP header spoofing. All requests witha
     # different source will be blocked.
-    trusted_proxies: ['10.42.0.0/16']
+    trusted_proxies: []
 
     # To bring support for applications using deep-linking, you
     # can set custom URL schemes to be accepted when present in
