@@ -1,0 +1,10 @@
+apiVersion: rauthy.io/v1alpha1
+kind: OIDCClient
+metadata:
+  name: qui-oidcclient
+spec:
+  client_id: qui
+  confidential: true
+  name: qui
+  redirect_uris:
+    - https://qui.example.com/api/auth/oidc/callback

@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: qui
+  labels:
+    app: qui
+spec:
+  serviceName: qui
+  selector:
+    matchLabels:
+      app: qui
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: qui
+    spec:
+      securityContext:
+        fsGroup: 10001
+      containers:
+      - name: qui
+        image: ghcr.io/autobrr/qui:v1.17.0
+        securityContext:
+          capabilities:
+            drop: ["ALL"]
+          runAsUser: 10001
+          runAsGroup: 10001
+          runAsNonRoot: true
+          allowPrivilegeEscalation: false
+        ports:
+          - containerPort: 7476
+            name: http
+        volumeMounts:
+          - name: qui-config
+            mountPath: /config
+          - name: qui-secrets
+            mountPath: /etc/secrets
+            readOnly: true
+        resources: 
+          limits:
+            cpu: 200m
+            memory: 256Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        env:
+          - name: QUI__OIDC_ENABLED
+            value: "true"
+          - name: QUI__OIDC_ISSUER
+            value: "https://iam.example.com/auth/v1/"
+          - name: QUI__OIDC_CLIENT_ID
+            value: qui
+          - name: QUI__OIDC_REDIRECT_URL
+            value: https://qui.example.com/api/auth/oidc/callback
+          - name: QUI__OIDC_CLIENT_SECRET_FILE
+            value: /etc/secrets/client_secret
+          - name: QUI__OIDC_DISABLE_BUILT_IN_LOGIN
+            value: "true"
+      volumes:
+      - name: qui-config
+        persistentVolumeClaim:
+          claimName: qui-config
+      - name: qui-secrets
+        secret:
+          secretName: qui-oidc-secret
+          items:
+            - key: client_secret
+              path: client_secret
+              mode: 0600
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: qui-config
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 2Gi
