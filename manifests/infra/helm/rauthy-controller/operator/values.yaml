@@ -1,0 +1,9 @@
+# Rauthy API connection settings.
+rauthy:
+  # Name of an existing Secret containing:
+  # - RAUTHY_URL: base URL of Rauthy instance (e.g. https://rauthy.example.com)
+  # - RAUTHY_API_KEY: API key for the controller
+  existingSecret: rauthy-api-secret
+
+podSecurityContext:
+  fsGroup: 10001

@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+helmCharts:
+  - name: rauthy-controller
+    namespace: rauthy
+    repo: https://strange-journey.github.io/rauthy-controller
+    version: 0.1.2
+    releaseName: rauthy-controller
+    valuesFile: values.yaml
