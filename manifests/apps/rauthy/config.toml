@@ -114,7 +114,7 @@ password_reset_cookie_binding = false
 # `CF-Connecting-IP`.
 #
 # overwritten by: PEER_IP_HEADER_NAME
-peer_ip_header_name = ''
+# peer_ip_header_name = ''
 
 # You can set different security levels for Rauthy's cookies. The
 # safest option would be 'host', but may not be desirable when you
@@ -560,7 +560,7 @@ backup_keep_days_local = 3
 # If left empty, the Dashboard will not be exposed.
 #
 # overwritten by: HQL_PASSWORD_DASHBOARD
-password_dashboard = ""
+# password_dashboard = ""
 
 # Can be set to `true` during local dev and testing to issue
 # insecure cookies
