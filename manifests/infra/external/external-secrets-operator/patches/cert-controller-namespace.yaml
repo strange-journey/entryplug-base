@@ -1,0 +1,16 @@
+# Upstream's static release YAML has no {{ .Release.Namespace }} templating
+# left in it, so these two flags are hardcoded to "default". `test` guards
+# fail the kustomize build loudly if a version bump reorders/removes args,
+# instead of silently pointing cert-controller at the wrong namespace again.
+- op: test
+  path: /spec/template/spec/containers/0/args/3
+  value: --service-namespace=default
+- op: replace
+  path: /spec/template/spec/containers/0/args/3
+  value: --service-namespace=external-secrets-operator
+- op: test
+  path: /spec/template/spec/containers/0/args/5
+  value: --secret-namespace=default
+- op: replace
+  path: /spec/template/spec/containers/0/args/5
+  value: --secret-namespace=external-secrets-operator

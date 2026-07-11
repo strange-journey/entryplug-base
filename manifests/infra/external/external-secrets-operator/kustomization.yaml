@@ -3,3 +3,12 @@ kind: Kustomization
 namespace: external-secrets-operator
 resources:
    - https://github.com/external-secrets/external-secrets/releases/download/v2.7.0/external-secrets.yaml
+patches:
+  - target:
+      kind: Deployment
+      name: external-secrets-cert-controller
+    path: patches/cert-controller-namespace.yaml
+  - target:
+      kind: Deployment
+      name: external-secrets-webhook
+    path: patches/webhook-dns-name.yaml

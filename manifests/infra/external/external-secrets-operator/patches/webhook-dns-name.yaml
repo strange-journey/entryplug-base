@@ -1,0 +1,7 @@
+# See cert-controller-namespace.yaml for why this is hardcoded upstream.
+- op: test
+  path: /spec/template/spec/containers/0/args/2
+  value: --dns-name=external-secrets-webhook.default.svc
+- op: replace
+  path: /spec/template/spec/containers/0/args/2
+  value: --dns-name=external-secrets-webhook.external-secrets-operator.svc
