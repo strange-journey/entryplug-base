@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - https://github.com/envoyproxy/gateway/releases/download/v1.8.2/install.yaml
+# Upstream's static install.yaml was rendered with Helm release name "eg",
+# baked into app.kubernetes.io/instance. The prior Helm-inflated install used
+# release name "envoy-gateway", which is now immutably set on the live
+# envoy-gateway Deployment's spec.selector. Force the label back to match so
+# the existing Deployment/Service can be updated in place instead of
+# rejected for changing an immutable field.
+labels:
+  - pairs:
+      app.kubernetes.io/instance: envoy-gateway
+    includeSelectors: true
