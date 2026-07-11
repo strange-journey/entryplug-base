@@ -16,7 +16,7 @@ spec:
 
   dataFrom:
   - extract:
-      conversionStrategy: Default	
+      conversionStrategy: Default
       decodingStrategy: None
       metadataPolicy: None
-      key: {{ .Values.vaultWildcardSecretKey }}
+      key: placeholder-vault-secret-key

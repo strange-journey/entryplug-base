@@ -4,16 +4,16 @@ metadata:
   name: rauthy-https
 spec:
   parentRefs:
-    - group: gateway.networking.k8s.io	
-      kind: Gateway	
+    - group: gateway.networking.k8s.io
+      kind: Gateway
       name: gateway
       namespace: envoy-gateway-system
       sectionName: https
   hostnames:
-    - {{ .Values.domain }}
+    - auth.example.com
   rules:
-    - backendRefs: 
-      - group: ''	
+    - backendRefs:
+      - group: ''
         kind: Service
         name: rauthy
         port: 8080

@@ -13,7 +13,7 @@ spec:
       port: 8443
       targetPort: 8443
 ---
-# The headless service is used for the Raft Cluster setup, so Nodes 
+# The headless service is used for the Raft Cluster setup, so Nodes
 # can connect to each other without any load balancer in between.
 apiVersion: v1
 kind: Service
@@ -22,7 +22,7 @@ metadata:
 spec:
   type: ClusterIP
   clusterIP: None
-  # Make sure to only publish them on the headless service 
+  # Make sure to only publish them on the headless service
   # and NOT the one you are using via your reverse proxy!
   publishNotReadyAddresses: true
   sessionAffinity: None
@@ -57,7 +57,7 @@ metadata:
     app: rauthy
 spec:
   serviceName: rauthy-headless
-  replicas: {{ .Values.replicas }}
+  replicas: 1
   selector:
     matchLabels:
       app: rauthy
@@ -108,6 +108,9 @@ spec:
           envFrom:
             - secretRef:
                 name: rauthy-env-secret
+          # Kept as an explicit empty list so overlays can append
+          # via JSON6902 `/env/-` patches without needing to create it.
+          env: []
           readinessProbe:
             httpGet:
               scheme: HTTP
@@ -137,8 +140,8 @@ spec:
             secretName: wildcard-cert-tls
 
   volumeClaimTemplates:
-    - apiVersion: v1	
-      kind: PersistentVolumeClaim	
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
       metadata:
         name: rauthy-data
       spec:
@@ -146,4 +149,4 @@ spec:
         storageClassName: local-path
         resources:
           requests:
-            storage: {{ .Values.dataStorageSize }}
+            storage: 128Mi

@@ -1,0 +1,12 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: rauthy
+resources:
+  - rauthy.yaml
+  - httproute.yaml
+  - wildcard-cert.yaml
+  - env-externalsecret.yaml
+configMapGenerator:
+  - name: rauthy-config
+    files:
+      - config.toml
