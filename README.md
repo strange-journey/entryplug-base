@@ -9,7 +9,7 @@ manifests/
   apps/           # Application workloads
   infra/
     custom/       # Custom infra resources (gateway, certs, MetalLB, ESO store, secrets)
-    helm/         # Helm chart installs (cert-manager, cnpg, envoy-gateway, ESO, metallb)
+    helm/         # Helm chart installs (cert-manager, envoy-gateway, ESO, metallb)
   rauthy/         # Rauthy IAM provider (Helm chart)
 scripts/
   template_config_toml.py   # Generates config.toml.template + values.yaml from config.toml
