@@ -1,0 +1,140 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: szurubooru
+  labels:
+    app: szurubooru
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: szurubooru
+  template:
+    metadata:
+      labels:
+        app: szurubooru
+    spec:
+      securityContext:
+        fsGroup: 10001
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: server
+          image: szurubooru/server:latest
+          securityContext:
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          env:
+            - name: POSTGRES_HOST
+              value: szurubooru-postgres-rw
+            - name: POSTGRES_DB
+              value: szurubooru
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: szurubooru-postgres
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: szurubooru-postgres
+                  key: password
+            - name: THREADS
+              value: "4"
+          ports:
+            - name: api
+              containerPort: 6666
+              protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: api
+            periodSeconds: 10
+            failureThreshold: 30
+          livenessProbe:
+            tcpSocket:
+              port: api
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: api
+            periodSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 1Gi
+          volumeMounts:
+            - name: config
+              mountPath: /opt/app/config.yaml
+              subPath: config.yaml
+              readOnly: true
+            - name: data
+              mountPath: /data
+        - name: client
+          image: szurubooru/client:latest
+          securityContext:
+            capabilities:
+              drop: ["ALL"]
+              add: ["CHOWN", "NET_BIND_SERVICE", "SETGID", "SETUID"]
+            runAsUser: 0
+            runAsGroup: 0
+            allowPrivilegeEscalation: false
+          env:
+            - name: BACKEND_HOST
+              value: localhost
+            - name: BASE_URL
+              value: /
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+            failureThreshold: 30
+          livenessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              memory: 256Mi
+          volumeMounts:
+            - name: data
+              mountPath: /data
+              readOnly: true
+      volumes:
+        - name: config
+          secret:
+            secretName: szurubooru-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: szurubooru-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: szurubooru-data
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 100Gi

@@ -1,0 +1,19 @@
+apiVersion: rauthy.io/v1alpha1
+kind: OIDCClient
+metadata:
+  name: szurubooru-oidcclient
+spec:
+  client_id: szurubooru
+  confidential: true
+  name: Szurubooru
+  client_uri: https://szurubooru.example.com
+  allowed_origins:
+    - https://szurubooru.example.com
+  redirect_uris:
+    - https://szurubooru.example.com/oauth2/callback
+  post_logout_redirect_uris:
+    - https://szurubooru.example.com/
+  secret_name: szurubooru-oidc-secret
+  secret_keys:
+    client_id: client-id
+    client_secret: client-secret
