@@ -20,6 +20,20 @@ spec:
     spec:
       securityContext:
         fsGroup: 10001
+      initContainers:
+        - name: create-media-dirs
+          image: busybox:1.38
+          securityContext:
+            capabilities:
+              drop: ["ALL"]
+            runAsUser: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: media
+              mountPath: /media
+          command: ["sh", "-c", "mkdir -p /media/movies /media/tv"]
       containers:
         - name: jellyfin
           image: docker.io/jellyfin/jellyfin:12.0-rc2
