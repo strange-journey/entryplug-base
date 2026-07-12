@@ -19,7 +19,7 @@ spec:
         fsGroup: 10001
       containers:
       - name: qui
-        image: ghcr.io/autobrr/qui:v1.17.0
+        image: ghcr.io/autobrr/qui:v1.22.0
         securityContext:
           capabilities:
             drop: ["ALL"]
@@ -36,7 +36,7 @@ spec:
           - name: qui-secrets
             mountPath: /etc/secrets
             readOnly: true
-        resources: 
+        resources:
           limits:
             cpu: 200m
             memory: 256Mi
