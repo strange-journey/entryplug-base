@@ -7,5 +7,4 @@ resources:
   - oidcclient.yaml
   - securitypolicy.yaml
   - service.yaml
-  - peer-service.yaml
   - namespace.yaml
