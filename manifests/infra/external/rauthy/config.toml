@@ -2062,7 +2062,7 @@ domain_blacklist = []
 #
 # default: false
 # overwritten by: USER_REG_OPEN_REDIRECT
-allow_open_redirect = false
+# allow_open_redirect = false
 
 [user_values]
 
