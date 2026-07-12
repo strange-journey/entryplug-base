@@ -4,4 +4,3 @@ namespace: minecraft
 resources:
   - minecraft-server.yaml
   - service.yaml
-  - namespace.yaml
