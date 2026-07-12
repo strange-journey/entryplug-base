@@ -1,0 +1,10 @@
+apiVersion: rauthy.io/v1alpha1
+kind: OIDCClient
+metadata:
+  name: jellyfin-oidcclient
+spec:
+  client_id: jellyfin
+  confidential: true
+  name: jellyfin
+  redirect_uris:
+    - https://jellyfin.example.com/sso/OID/redirect/rauthy
