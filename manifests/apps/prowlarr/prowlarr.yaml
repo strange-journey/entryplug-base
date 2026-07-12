@@ -17,6 +17,28 @@ spec:
       securityContext:
         fsGroup: 10001
         fsGroupChangePolicy: OnRootMismatch
+      initContainers:
+        - name: configure-external-authentication
+          image: alpine:3.24
+          command:
+            - sh
+            - -ec
+            - |
+              config=/prowlarr/etc/config.xml
+              [ ! -f "$config" ] && exit 0
+              grep -q '<AuthenticationMethod>[^<]*</AuthenticationMethod>' "$config"
+              sed -i 's#<AuthenticationMethod>[^<]*</AuthenticationMethod>#<AuthenticationMethod>External</AuthenticationMethod>#' "$config"
+          securityContext:
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: config
+              mountPath: /prowlarr/etc
       containers:
         - name: prowlarr
           image: 11notes/prowlarr:2.4.0
