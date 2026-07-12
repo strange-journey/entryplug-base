@@ -6,4 +6,3 @@ resources:
   - service.yaml
   - oidcclient.yaml
   - httproute.yaml
-  - namespace.yaml
