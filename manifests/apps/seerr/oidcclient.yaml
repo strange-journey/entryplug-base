@@ -1,0 +1,16 @@
+apiVersion: rauthy.io/v1alpha1
+kind: OIDCClient
+metadata:
+  name: seerr-oidcclient
+spec:
+  client_id: seerr
+  confidential: true
+  name: Seerr
+  client_uri: https://seerr.example.com
+  allowed_origins:
+    - https://seerr.example.com
+  redirect_uris:
+    - https://seerr.example.com/oauth2/callback
+  post_logout_redirect_uris:
+    - https://seerr.example.com/
+  secret_name: seerr-oidc-secret

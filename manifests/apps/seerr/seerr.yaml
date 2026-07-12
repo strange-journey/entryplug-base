@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seerr
+  labels:
+    app: seerr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seerr
+  template:
+    metadata:
+      labels:
+        app: seerr
+    spec:
+      securityContext:
+        fsGroup: 10001
+        fsGroupChangePolicy: OnRootMismatch
+      containers:
+        - name: seerr
+          image: ghcr.io/seerr-team/seerr:v3.3.0
+          securityContext:
+            capabilities:
+              drop: ["ALL"]
+            readOnlyRootFilesystem: true
+            runAsUser: 10001
+            runAsGroup: 10001
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+          env:
+            - name: TZ
+              value: Etc/UTC
+            - name: PORT
+              value: "5055"
+          ports:
+            - name: http
+              containerPort: 5055
+              protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: http
+            periodSeconds: 10
+            failureThreshold: 30
+          livenessProbe:
+            httpGet:
+              path: /api/v1/settings/public
+              port: http
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /api/v1/settings/public
+              port: http
+            periodSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              memory: 512Mi
+          volumeMounts:
+            - name: config
+              mountPath: /app/config
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: seerr-config
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: seerr-config
+spec:
+  accessModes: ["ReadWriteOnce"]
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
