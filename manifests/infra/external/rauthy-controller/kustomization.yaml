@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: rauthy
 resources:
-   - https://github.com/strange-journey/rauthy-controller/releases/download/v0.1.4/rauthy-controller.yaml
+   - https://github.com/strange-journey/rauthy-controller/releases/download/v0.1.5/rauthy-controller.yaml
 patches:
   - target:
       kind: Deployment
