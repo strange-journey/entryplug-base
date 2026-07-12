@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: qbittorrent-peer
+spec:
+  type: LoadBalancer
+  selector:
+    app: qbittorrent
+  ports:
+    - name: bittorrent-tcp
+      port: 6881
+      targetPort: bittorrent-tcp
+      protocol: TCP
+    - name: bittorrent-udp
+      port: 6881
+      targetPort: bittorrent-udp
+      protocol: UDP
