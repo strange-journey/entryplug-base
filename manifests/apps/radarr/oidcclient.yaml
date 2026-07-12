@@ -1,0 +1,19 @@
+apiVersion: rauthy.io/v1alpha1
+kind: OIDCClient
+metadata:
+  name: radarr-oidcclient
+spec:
+  client_id: radarr
+  confidential: true
+  name: Radarr
+  client_uri: https://radarr.example.com
+  allowed_origins:
+    - https://radarr.example.com
+  redirect_uris:
+    - https://radarr.example.com/oauth2/callback
+  post_logout_redirect_uris:
+    - https://radarr.example.com/
+  secret_name: radarr-oidc-secret
+  secret_keys:
+    client_id: client-id
+    client_secret: client-secret
