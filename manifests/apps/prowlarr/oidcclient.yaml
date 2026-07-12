@@ -1,0 +1,19 @@
+apiVersion: rauthy.io/v1alpha1
+kind: OIDCClient
+metadata:
+  name: prowlarr-oidcclient
+spec:
+  client_id: prowlarr
+  confidential: true
+  name: Prowlarr
+  client_uri: https://prowlarr.example.com
+  allowed_origins:
+    - https://prowlarr.example.com
+  redirect_uris:
+    - https://prowlarr.example.com/oauth2/callback
+  post_logout_redirect_uris:
+    - https://prowlarr.example.com/
+  secret_name: prowlarr-oidc-secret
+  secret_keys:
+    client_id: client-id
+    client_secret: client-secret
