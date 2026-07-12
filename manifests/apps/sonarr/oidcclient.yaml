@@ -1,0 +1,19 @@
+apiVersion: rauthy.io/v1alpha1
+kind: OIDCClient
+metadata:
+  name: sonarr-oidcclient
+spec:
+  client_id: sonarr
+  confidential: true
+  name: Sonarr
+  client_uri: https://sonarr.example.com
+  allowed_origins:
+    - https://sonarr.example.com
+  redirect_uris:
+    - https://sonarr.example.com/oauth2/callback
+  post_logout_redirect_uris:
+    - https://sonarr.example.com/
+  secret_name: sonarr-oidc-secret
+  secret_keys:
+    client_id: client-id
+    client_secret: client-secret
