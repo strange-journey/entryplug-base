@@ -1,0 +1,19 @@
+apiVersion: rauthy.io/v1alpha1
+kind: OIDCClient
+metadata:
+  name: qbittorrent-oidcclient
+spec:
+  client_id: qbittorrent
+  confidential: true
+  name: qBittorrent
+  client_uri: https://qbittorrent.example.com
+  allowed_origins:
+    - https://qbittorrent.example.com
+  redirect_uris:
+    - https://qbittorrent.example.com/oauth2/callback
+  post_logout_redirect_uris:
+    - https://qbittorrent.example.com/
+  secret_name: qbittorrent-oidc-secret
+  secret_keys:
+    client_id: client-id
+    client_secret: client-secret
