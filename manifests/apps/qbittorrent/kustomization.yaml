@@ -7,4 +7,3 @@ resources:
   - oidcclient.yaml
   - securitypolicy.yaml
   - service.yaml
-  - namespace.yaml
