@@ -4,6 +4,4 @@ namespace: qbittorrent
 resources:
   - qbittorrent.yaml
   - httproute.yaml
-  - oidcclient.yaml
-  - securitypolicy.yaml
   - service.yaml
