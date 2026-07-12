@@ -1,0 +1,11 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: qbt-disable-http2-policy
+spec:
+  targetRefs:
+    - group: ""
+      kind: Service
+      name: qbittorrent
+  http2:
+    disabled: true
