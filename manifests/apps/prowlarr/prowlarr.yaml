@@ -17,37 +17,20 @@ spec:
       securityContext:
         fsGroup: 10001
         fsGroupChangePolicy: OnRootMismatch
-      initContainers:
-        - name: prepare-run
-          image: busybox:1.37
-          command: ["sh", "-c", "chmod 755 /run && chown 10001:10001 /run"]
-          securityContext:
-            capabilities:
-              drop: ["ALL"]
-              add: ["CHOWN"]
-            runAsUser: 0
-            runAsGroup: 0
-            allowPrivilegeEscalation: false
-          volumeMounts:
-            - name: run
-              mountPath: /run
       containers:
         - name: prowlarr
-          image: ghcr.io/hotio/prowlarr:release-2.4.0.5397
+          image: 11notes/prowlarr:2.4.0
           securityContext:
             capabilities:
               drop: ["ALL"]
+            readOnlyRootFilesystem: true
             runAsUser: 10001
             runAsGroup: 10001
             runAsNonRoot: true
             allowPrivilegeEscalation: false
           env:
-            - name: PUID
-              value: "10001"
-            - name: PGID
-              value: "10001"
-            - name: UMASK
-              value: "002"
+            - name: TZ
+              value: Etc/UTC
           ports:
             - name: http
               containerPort: 9696
@@ -75,14 +58,14 @@ spec:
               memory: 512Mi
           volumeMounts:
             - name: config
-              mountPath: /config
-            - name: run
-              mountPath: /run
+              mountPath: /prowlarr/etc
+            - name: tmp
+              mountPath: /tmp
       volumes:
         - name: config
           persistentVolumeClaim:
             claimName: prowlarr-config
-        - name: run
+        - name: tmp
           emptyDir: {}
 ---
 apiVersion: v1
